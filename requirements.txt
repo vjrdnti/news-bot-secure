@@ -1,0 +1,13 @@
+numpy==2.0.0
+pandas==2.2.2
+python-dateutil==2.9.0.post0
+pytz==2024.1
+six==1.16.0
+tzdata==2024.1
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.2.2
+tweepy==4.14.0
+pyyaml==6.0.1
+selenium==4.23.0
+webdriver_manager==4.0.1

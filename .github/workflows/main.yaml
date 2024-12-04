@@ -1,0 +1,43 @@
+name: run automation.py
+
+on:
+  schedule:
+    - cron: '1 */2 * * *' # At 04:05 on 1st of each month, edited so to save our precious minutes b4 actual deployment
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+
+      - name: setup chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U setuptools
+          pip install -r requirements.txt
+          
+      - name: execute py script # run main.py
+        run: python automation.py
+          
+      - name: commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || (git commit -m "Update on trigger" --allow-empty) 
+        
+          
+      - name: push changes
+        run: git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
